@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Message_Processing_and_Anomaly_Detection.Interfaces
 {
-    public interface ISignalRService
+    public interface IAnomalyDetectionService
     {
-        Task SendAlertAsync(string message, ServerStatistics stats);
+        Task AnalyzeAsync(ServerStatistics current);
 
     }
 }

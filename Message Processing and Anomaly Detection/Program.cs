@@ -4,6 +4,7 @@ using Message_Processing_and_Anomaly_Detection.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace Message_Processing_and_Anomaly_Detection
 {
@@ -20,6 +21,9 @@ namespace Message_Processing_and_Anomaly_Detection
                 {
                     var configuration = context.Configuration;
 
+                    services.AddSingleton<IConfiguration>(configuration);
+                    services.AddSingleton<MongoDbService>();
+
                     services.AddSingleton<IMessageQueue, RabbitMqMessageQueue>(provider =>
                     {
                         var hostName = configuration.GetValue<string>("RabbitMQConfig:HostName");
@@ -34,6 +38,12 @@ namespace Message_Processing_and_Anomaly_Detection
             var messageQueue = host.Services.GetRequiredService<IMessageQueue>();
             messageQueue.Subscribe(HandleServerStatistics);
 
+            var mongoService = host.Services.GetRequiredService<MongoDbService>();
+            messageQueue.Subscribe(stats =>
+            {
+                HandleServerStatistics(stats);
+                mongoService.InsertAsync(stats).Wait();
+            });
             Console.WriteLine("Subscribed to RabbitMQ messages. Press Enter to exit.");
             Console.ReadLine();
 
