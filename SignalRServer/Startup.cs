@@ -27,5 +27,6 @@ namespace SignalRServer
                 endpoints.MapHub<AlertHub>("/alertHub");
             });
         }
+
     }
 }

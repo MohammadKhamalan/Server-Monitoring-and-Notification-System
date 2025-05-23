@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Message Processing and Anom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRServer", "SignalRServer\SignalRServer.csproj", "{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalR Event Consumer Service", "SignalR Event Consumer Service\SignalR Event Consumer Service.csproj", "{29AEF075-D8C8-49C2-89D9-76C18A0AD74F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29AEF075-D8C8-49C2-89D9-76C18A0AD74F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29AEF075-D8C8-49C2-89D9-76C18A0AD74F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29AEF075-D8C8-49C2-89D9-76C18A0AD74F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29AEF075-D8C8-49C2-89D9-76C18A0AD74F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
