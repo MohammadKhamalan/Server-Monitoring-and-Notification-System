@@ -9,7 +9,10 @@ namespace Message_Processing_and_Anomaly_Detection.Interfaces
 {
     public interface IAnomalyDetectionService
     {
-        Task AnalyzeAsync(ServerStatistics current);
+        public bool CheckForMemoryAnomaly(ServerStatistics current, ServerStatistics previous);
+        public bool CheckForCpuAnomaly(ServerStatistics current, ServerStatistics previous);
+        public bool CheckForHighMemoryUsage(ServerStatistics statistics);
+        public bool CheckForHighCpuUsage(ServerStatistics statistics);
 
     }
 }

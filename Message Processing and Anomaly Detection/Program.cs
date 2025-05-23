@@ -1,10 +1,8 @@
 ﻿using Message_Processing_and_Anomaly_Detection.Interfaces;
-using Message_Processing_and_Anomaly_Detection.Models;
 using Message_Processing_and_Anomaly_Detection.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace Message_Processing_and_Anomaly_Detection
 {
@@ -21,8 +19,20 @@ namespace Message_Processing_and_Anomaly_Detection
                 {
                     var configuration = context.Configuration;
 
-                    services.AddSingleton<IConfiguration>(configuration);
-                    services.AddSingleton<MongoDbService>();
+                    services.AddSingleton<IAnomalyDetectionService, AnomalyDetectionService>();
+                    services.AddSingleton<ISignalRService, SignalRService>(provider =>
+                    {
+                        var signalRUrl = configuration.GetValue<string>("SignalRConfig:SignalRUrl");
+                        return new SignalRService(signalRUrl);
+                    });
+
+                    services.AddSingleton<IMongoDbService, MongoDbService>(provider =>
+                    {
+                        var connectionString = configuration.GetValue<string>("MongoDb:ConnectionString");
+                        var databaseName = configuration.GetValue<string>("MongoDb:DatabaseName");
+                        var collectionName = configuration.GetValue<string>("MongoDb:CollectionName");
+                        return new MongoDbService(connectionString, databaseName, collectionName);
+                    });
 
                     services.AddSingleton<IMessageQueue, RabbitMqMessageQueue>(provider =>
                     {
@@ -32,36 +42,20 @@ namespace Message_Processing_and_Anomaly_Detection
                         var password = configuration.GetValue<string>("RabbitMQConfig:Password");
                         return new RabbitMqMessageQueue(hostName, port, userName, password);
                     });
+
+                    services.AddSingleton<StatisticsProcessor>();
                 })
-                    .Build();
+                .Build();
 
             var messageQueue = host.Services.GetRequiredService<IMessageQueue>();
-            messageQueue.Subscribe(HandleServerStatistics);
+            var statisticsProcessor = host.Services.GetRequiredService<StatisticsProcessor>();
 
-            var mongoService = host.Services.GetRequiredService<MongoDbService>();
-            messageQueue.Subscribe(stats =>
+            messageQueue.Subscribe(async (statistics) =>
             {
-                HandleServerStatistics(stats);
-                mongoService.InsertAsync(stats).Wait();
+                await statisticsProcessor.ProcessStatistics(statistics);
             });
-            Console.WriteLine("Subscribed to RabbitMQ messages. Press Enter to exit.");
-            Console.ReadLine();
 
-            if (messageQueue is IDisposable disposable)
-            {
-                disposable.Dispose();
-            }
-        }
-
-        private static void HandleServerStatistics(ServerStatistics stats)
-        {
-            Console.WriteLine("Received Server Statistics:");
-            Console.WriteLine($"  Server ID      : {stats.ServerIdentifier}");
-            Console.WriteLine($"  CPU Usage      : {stats.CpuUsage}%");
-            Console.WriteLine($"  Memory Usage   : {stats.MemoryUsage} MB");
-            Console.WriteLine($"  Available Mem  : {stats.AvailableMemory} MB");
-            Console.WriteLine($"  Timestamp      : {stats.Timestamp}");
-            Console.WriteLine(new string('-', 40));
+            await host.RunAsync();
         }
     }
 }

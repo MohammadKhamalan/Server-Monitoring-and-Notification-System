@@ -8,16 +8,3 @@ services:
       - "5672:5672"
       - "15672:15672"
     hostname: rabbitmq-local
-
-  message_processor:
-    build: .
-    container_name: message_processor
-    depends_on:
-      - rabbitmq
-    environment:
-      RabbitMQConfig__HostName: rabbitmq
-      RabbitMQConfig__Port: 5672
-      RabbitMQConfig__UserName: guest
-      RabbitMQConfig__Password: guest
-    volumes:
-      - ./appsettings.json:/app/appsettings.json

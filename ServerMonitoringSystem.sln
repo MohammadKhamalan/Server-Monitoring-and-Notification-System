@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server Statistics Collectio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Message Processing and Anomaly Detection", "Message Processing and Anomaly Detection\Message Processing and Anomaly Detection.csproj", "{1B468B8D-5F5A-429A-992C-CAB286ABF465}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRServer", "SignalRServer\SignalRServer.csproj", "{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1B468B8D-5F5A-429A-992C-CAB286ABF465}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B468B8D-5F5A-429A-992C-CAB286ABF465}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B468B8D-5F5A-429A-992C-CAB286ABF465}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E3D6F79-AD24-4FA4-9CB8-412DE2E75F79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
